@@ -1,0 +1,4 @@
+.vscode
+.env
+private.*
+*.mp3

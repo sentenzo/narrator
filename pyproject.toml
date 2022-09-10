@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "voice-tbot"
+version = "0.1.0"
+description = "A telegram bot to convert url → text → speech → audio file"
+authors = ["sentenzo <kassiyskley@rambler.ru>"]
+license = "MIT License"
+readme = "README.md"
+packages = [{include = "voice_tbot"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiogram = {version = "^3.0.0b4", allow-prereleases = true}
+pyttsx3 = "^2.90"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^1.7.0"
+pytest = "^7.1.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
