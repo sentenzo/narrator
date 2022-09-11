@@ -1,4 +1,10 @@
+__pycache__
+
 .vscode
 .env
 private.*
+
 *.mp3
+*.wav
+*.ogg
+*.raw

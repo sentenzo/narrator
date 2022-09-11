@@ -48,9 +48,12 @@ class Voice:
 
         if not file_name:
             file_name = "".join(
-                ["./audio/", text[:10], "_", uuid.uuid4().hex.upper()[:6], ".mp3"]
+                ["./audio/", text[:10], "_", uuid.uuid4().hex.upper()[:6], ".wav"]
             )
         self._engine.save_to_file(text, file_name)
+        # works only if the text has no '\n's
+        # 2 minutes audio == 5 Mb
+        # the format is: PCM signed 16-bit little-endian
         self._engine.runAndWait()
 
 
