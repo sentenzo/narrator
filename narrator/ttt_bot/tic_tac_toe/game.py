@@ -1,8 +1,5 @@
 from ast import Tuple
 import random
-from typing import List
-
-from aiogram.types import InlineKeyboardButton
 
 
 class TicTacToeGame:
@@ -14,6 +11,7 @@ class TicTacToeGame:
         self._board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
         self._winner = 0
         self._fields_left = 9
+        self._player = 1
 
     def _check_win(self, i, j) -> int:
         if self._board[i][0] == self._board[i][1] == self._board[i][2] != 0:
@@ -26,22 +24,24 @@ class TicTacToeGame:
             return self._board[i][j]
         return 0
 
-    def move_manually(self, player, i, j):
+    def move_manually(self, i, j):
         if self._board[i][j] != 0:
             raise IndexError("Illegal move")
-        self._board[i][j] = player
+        self._board[i][j] = self._player
         self._fields_left -= 1
         self._winner = self._check_win(i, j)
+        self._player = 3 - self._player
 
-    def move_ai(self, player):
-        rival = 3 - player
+    def move_ai(self):
+        rival = 3 - self._player
+        player = self._player
         for i in range(3):
             for j in range(3):
                 if self._board[i][j] == 0:
                     self._board[i][j] = player
                     if self._check_win(i, j) == player:
                         self._board[i][j] = 0
-                        self.move_manually(player, i, j)
+                        self.move_manually(i, j)
                         return
                     self._board[i][j] = 0
 
@@ -51,7 +51,7 @@ class TicTacToeGame:
                     self._board[i][j] = rival
                     if self._check_win(i, j) == rival:
                         self._board[i][j] = 0
-                        self.move_manually(player, i, j)
+                        self.move_manually(i, j)
                         return
                     self._board[i][j] = 0
         g0 = [[1, 1]]
@@ -62,7 +62,7 @@ class TicTacToeGame:
 
         for i, j in g0 + g1 + g2:
             if self._board[i][j] == 0:
-                self.move_manually(player, i, j)
+                self.move_manually(i, j)
                 return
 
     @property
@@ -73,14 +73,3 @@ class TicTacToeGame:
             return ("Tie", 0)
         else:
             return ("Ongoing", 0)
-
-    def make_kb(self) -> list[list[InlineKeyboardButton]]:
-        buttons = []
-        for i in range(3):
-            row = []
-            for j in range(3):
-                t = [" ▫ ", " x ", " o "][self._board[i][j]]
-                cd = f"ttt{i}{j}"
-                row.append(InlineKeyboardButton(text=t, callback_data=cd))
-            buttons.append(row)
-        return buttons
