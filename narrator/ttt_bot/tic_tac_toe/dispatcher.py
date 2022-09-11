@@ -71,5 +71,26 @@ async def user_wants_to_play(callback: types.CallbackQuery):
     await humanlike_delay()
     await callback.message.answer("🤖: Your turn")
 
+    player = 1
+    while ttt.status == ("Ongoing", 0):
+        await humanlike_delay()
+        await humanlike_delay()
+        ttt.move_ai(player)
+        keyboard = types.InlineKeyboardMarkup(inline_keyboard=ttt.make_kb())
+        await callback.message.answer(
+            "🤖:",
+            reply_markup=keyboard,
+        )
+        player = 3 - player
+
+    if ttt.status == ("Tie", 0):
+        await humanlike_delay()
+        await callback.message.answer("🤖: It's a tie!")
+    elif ttt.status[0] == "Win":
+        await humanlike_delay()
+        await callback.message.answer(f"🤖: Player {ttt.status[1]} wins!")
+    await humanlike_delay()
+    await callback.message.answer("🤖: Type /start to play again")
+
 
 TIC_TAC_TOE_DISPATCHER = dp
