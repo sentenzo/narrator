@@ -7,7 +7,7 @@ from aiogram.filters.callback_data import CallbackData
 from aiogram.fsm.storage.memory import MemoryStorage
 
 
-from narrator.ttt_bot.tic_tac_toe.game import TicTacToeGame
+from narrator.bot.ttt_bot.tic_tac_toe.game import TicTacToeGame
 
 storage = MemoryStorage()
 

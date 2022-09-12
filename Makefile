@@ -1,7 +1,7 @@
 all:
 
 voice:
-	poetry run python narrator/voice.py
+	poetry run python narrator/speaker/voice.py
 
 bot:
-	poetry run python -m narrator.ttt_bot
+	poetry run python -m narrator.bot.ttt_bot
