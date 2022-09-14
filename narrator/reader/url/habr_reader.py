@@ -1,13 +1,13 @@
 from bs4 import BeautifulSoup
 
-from .base_url_extractor import BaseUrlExtractor
+from .base_url_reader import BaseUrlReader
 from narrator.article import Article
 
 
-class HabrExtractor(BaseUrlExtractor):
+class HabrReader(BaseUrlReader):
     @staticmethod
-    def extract_text(obj: str) -> str:
-        html = BaseUrlExtractor.get_html(obj)
+    def read_text(obj: str) -> str:
+        html = BaseUrlReader.get_html(obj)
         soup = BeautifulSoup(html, "html.parser")
         article = Article()
         article["title"] = soup.select_one(
@@ -24,8 +24,8 @@ class HabrExtractor(BaseUrlExtractor):
         return str(article)
 
     @staticmethod
-    def is_extractable(obj: str) -> bool:
+    def is_readable(obj: str) -> bool:
         re_temp = r"https\://habr\.com/../post/\d+"
-        return BaseUrlExtractor._re_check_url(
-            re_temp, obj
-        ) and BaseUrlExtractor.is_extractable(obj)
+        return BaseUrlReader._re_check_url(re_temp, obj) and BaseUrlReader.is_readable(
+            obj
+        )

@@ -1,8 +1,8 @@
-class BaseExtructor:
+class BaseReader:
     @staticmethod
-    def extract_text(obj) -> str:
+    def read_text(obj) -> str:
         raise NotImplemented()
 
     @staticmethod
-    def is_extractable(obj) -> bool:
+    def is_readable(obj) -> bool:
         raise NotImplemented()

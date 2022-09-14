@@ -1,20 +1,20 @@
 import urllib.request as ur
 
-from .habr_extractor import HabrExtractor
-from .base_url_extractor import BaseUrlExtractor
+from .habr_reader import HabrReader
+from .base_url_reader import BaseUrlReader
 
-URL_EXTRUCTORS = [HabrExtractor]
+URL_EXTRUCTORS = [HabrReader]
 
 
-def extract_text(obj: str) -> str:
+def read_text(obj: str) -> str:
     for Extr in URL_EXTRUCTORS:
-        if Extr.is_extractable(obj):
-            return Extr.extract_text(obj)
-    return f"No extractor matches the url: {obj}"
+        if Extr.is_readable(obj):
+            return Extr.read_text(obj)
+    return f"No reader matches the url: {obj}"
 
 
 def is_url(obj: str) -> bool:
-    return BaseUrlExtractor.is_extractable(obj)
+    return BaseUrlReader.is_readable(obj)
 
 
-__all__ = [extract_text, is_url]
+__all__ = [read_text, is_url]

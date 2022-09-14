@@ -31,7 +31,7 @@ async def take_document(message: Message):
 @dispatcher.message(content_types=ContentType.TEXT)
 async def take_text(message: Message):
     if eurl.is_url(message.text):
-        await message.answer(f"🤖: {eurl.extract_text(message.text)}")
+        await message.answer(f"🤖: {eurl.read_text(message.text)}")
     else:
         await take_else(message)
 

@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from urllib.parse import urlparse
 
 
-from ..base_extractor import BaseExtructor
+from ..base_reader import BaseReader
 
 # https://stackoverflow.com/a/38020041/2493536
 def _uri_validator(x):
@@ -14,13 +14,13 @@ def _uri_validator(x):
         return False
 
 
-class BaseUrlExtractor(BaseExtructor):
+class BaseUrlReader(BaseReader):
     @staticmethod
-    def extract_text(obj: str) -> str:
+    def read_text(obj: str) -> str:
         raise NotImplemented()
 
     @staticmethod
-    def is_extractable(obj: str) -> bool:
+    def is_readable(obj: str) -> bool:
         return _uri_validator(obj)
 
     @staticmethod
