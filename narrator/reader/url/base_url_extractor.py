@@ -1,9 +1,12 @@
+import re
+from urllib.request import urlopen
 from urllib.parse import urlparse
+
 
 from ..base_extractor import BaseExtructor
 
 # https://stackoverflow.com/a/38020041/2493536
-def uri_validator(x):
+def _uri_validator(x):
     try:
         result = urlparse(x)
         return all([result.scheme, result.netloc])
@@ -18,4 +21,17 @@ class BaseUrlExtractor(BaseExtructor):
 
     @staticmethod
     def is_extractable(obj: str) -> bool:
-        return uri_validator(obj)
+        return _uri_validator(obj)
+
+    @staticmethod
+    def _re_check_url(re_temp: str, url: str) -> bool:
+        if re.match(re_temp, url):
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def get_html(url: str) -> str:
+        with urlopen(url) as resp:
+            html = resp.read().decode()
+            return html

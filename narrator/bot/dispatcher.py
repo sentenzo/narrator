@@ -6,8 +6,7 @@ from aiogram import Dispatcher
 from aiogram.types import ContentType, Message
 from aiogram.fsm.storage.memory import MemoryStorage
 
-from .extractor import url as eurl
-from narrator.bot.n_bot.extractor.url import is_url
+from ..reader import url as eurl
 
 
 logger = logging.getLogger(__name__)

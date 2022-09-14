@@ -3,7 +3,7 @@ import asyncio
 
 from aiogram import Bot
 
-from narrator.bot.n_bot import dispatcher
+from narrator.bot import dispatcher
 
 
 async def main():

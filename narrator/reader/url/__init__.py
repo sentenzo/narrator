@@ -1,4 +1,3 @@
-import re
 import urllib.request as ur
 
 from .habr_extractor import HabrExtractor
