@@ -11,7 +11,7 @@ class Speaker:
         """
         import shutil
 
-        path_from = os.environ["MOCK_AUDIO_FILE_PATH"]
+        path_from = os.environ["BOT_MOCK_AUDIO_FILE_PATH"]
         path_to_audio = os.path.join(path_to_dest_dir, os.path.basename(path_from))
         shutil.copy(path_from, path_to_audio)
         return path_to_audio
