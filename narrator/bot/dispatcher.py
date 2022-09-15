@@ -18,7 +18,7 @@ mem_storage = MemoryStorage()
 dispatcher = Dispatcher(storage=mem_storage)
 
 
-@dispatcher.message(commands=["test"])
+@dispatcher.message(commands=["about"])
 async def cmd_test(message: Message):
     await message.answer("🤖: ...")
 
@@ -56,3 +56,8 @@ async def take_else(message: Message):
 
     logger.info(f"{user}: {message.text}")
     await message.answer("🤖: Please, send me a file or a link")
+
+
+from .authorizer import Authorizer
+
+dispatcher.message.middleware(Authorizer())
