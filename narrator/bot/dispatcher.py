@@ -37,7 +37,8 @@ async def take_document(message: Message):
         file_path = os.path.join(temp_dir_path, message.document.file_name)
         await bot.download(message.document, file_path)
         article = r_file.read_text(file_path)
-        path_to_audio = Speaker.narrate_to_file(article, temp_dir_path)
+        # path_to_audio = Speaker.narrate_to_file(article, temp_dir_path)
+        path_to_audio = Speaker.narrate_from_txt_to_file(file_path)
         tf = FSInputFile(path_to_audio)
         await message.answer_document(tf)
 
