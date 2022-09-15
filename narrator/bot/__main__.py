@@ -1,14 +1,10 @@
-import os
 import asyncio
 
-from aiogram import Bot
-
-from narrator.bot import dispatcher
+from narrator.bot import dispatcher, narrator_bot
 
 
 async def main():
-    bot = Bot(token=os.environ["BOT_TOKEN"])
-    await dispatcher.start_polling(bot)
+    await dispatcher.start_polling(narrator_bot)
 
 
 asyncio.run(main())

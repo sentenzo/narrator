@@ -3,13 +3,13 @@ import urllib.request as ur
 from .habr_reader import HabrReader
 from .base_url_reader import BaseUrlReader
 
-URL_EXTRUCTORS = [HabrReader]
+URL_READERS = [HabrReader]
 
 
 def read_text(obj: str) -> str:
-    for Extr in URL_EXTRUCTORS:
-        if Extr.is_readable(obj):
-            return Extr.read_text(obj)
+    for Reader in URL_READERS:
+        if Reader.is_readable(obj):
+            return Reader.read_text(obj)
     return f"No reader matches the url: {obj}"
 
 

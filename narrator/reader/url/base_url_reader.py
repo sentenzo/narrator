@@ -2,7 +2,7 @@ import re
 from urllib.request import urlopen
 from urllib.parse import urlparse
 
-
+from narrator.article import Article
 from ..base_reader import BaseReader
 
 # https://stackoverflow.com/a/38020041/2493536
@@ -16,7 +16,7 @@ def _uri_validator(x):
 
 class BaseUrlReader(BaseReader):
     @staticmethod
-    def read_text(obj: str) -> str:
+    def read_text(obj: str) -> Article:
         raise NotImplemented()
 
     @staticmethod

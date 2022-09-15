@@ -6,7 +6,7 @@ from narrator.article import Article
 
 class HabrReader(BaseUrlReader):
     @staticmethod
-    def read_text(obj: str) -> str:
+    def read_text(obj: str) -> Article:
         html = BaseUrlReader.get_html(obj)
         soup = BeautifulSoup(html, "html.parser")
         article = Article()
@@ -21,7 +21,7 @@ class HabrReader(BaseUrlReader):
         )
         article.text.append(soup.select_one("#post-content-body p").text)
 
-        return str(article)
+        return article
 
     @staticmethod
     def is_readable(obj: str) -> bool:
