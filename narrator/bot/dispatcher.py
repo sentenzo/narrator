@@ -36,8 +36,6 @@ async def take_document(message: Message):
     with tempfile.TemporaryDirectory() as temp_dir_path:
         file_path = os.path.join(temp_dir_path, message.document.file_name)
         await bot.download(message.document, file_path)
-        article = r_file.read_text(file_path)
-        # path_to_audio = Speaker.narrate_to_file(article, temp_dir_path)
         path_to_audio = Speaker.narrate_from_txt_to_file(file_path)
         tf = FSInputFile(path_to_audio)
         await message.answer_document(tf)
@@ -46,7 +44,12 @@ async def take_document(message: Message):
 @dispatcher.message(content_types=ContentType.TEXT)
 async def take_text(message: Message):
     if r_url.is_url(message.text):
-        await message.answer(f"🤖: {r_url.read_text(message.text)}")
+        article = r_url.read_text(message.text)
+        with tempfile.TemporaryDirectory() as temp_dir_path:
+            file_path = article.save_to_txt(temp_dir_path)
+            path_to_audio = Speaker.narrate_from_txt_to_file(file_path)
+            tf = FSInputFile(path_to_audio)
+            await message.answer_document(tf)
     else:
         await take_else(message)
 

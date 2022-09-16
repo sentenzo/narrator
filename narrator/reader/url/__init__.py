@@ -1,12 +1,14 @@
 import urllib.request as ur
 
+from narrator.article import Article
+
 from .habr_reader import HabrReader
 from .base_url_reader import BaseUrlReader
 
 URL_READERS = [HabrReader]
 
 
-def read_text(obj: str) -> str:
+def read_text(obj: str) -> Article:
     for Reader in URL_READERS:
         if Reader.is_readable(obj):
             return Reader.read_text(obj)
