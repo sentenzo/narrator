@@ -1,4 +1,4 @@
 import os
 from aiogram import Bot
 
-narrator_bot = Bot(token=os.environ["BOT_TOKEN"])
+narrator_bot = Bot(token=os.environ["NARRATOR_BOT_TOKEN"])

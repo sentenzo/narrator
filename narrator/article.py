@@ -1,5 +1,6 @@
-from narrator.sub_utils import add_suffix
 import os
+
+from narrator.sub_utils import add_suffix, make_filename
 
 
 class Article:
@@ -19,14 +20,8 @@ class Article:
         return f'Article(text="{text}")'
 
     def save_to_txt(self, dir_path: str) -> str:
-        import string
-
         file_name = self.title or self.text[:20]
-        cyrilic = "абвгдеёжзиклмнопрстуфхцчшщьыъэюя"
-        alphabet = (
-            string.digits + string.ascii_letters + cyrilic + cyrilic.upper() + " _-"
-        )
-        file_name = "".join([c for c in file_name if c in alphabet])
+        file_name = make_filename(file_name)
         file_name = add_suffix(file_name, ".txt")
 
         file_path = os.path.join(dir_path, file_name)

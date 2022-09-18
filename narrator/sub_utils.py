@@ -37,6 +37,19 @@ def add_suffix(file_path, ext=None):
     return join(*new_filename)
 
 
+def make_filename(file_name: str):
+    """
+    Removes all the symbols from the given string which are not in allowed in filenames.
+    The name of the file is chosen based on the source content. It initially can have any symbols like ':' or '/'.
+    """
+    from string import digits, ascii_letters
+
+    cyrilic = "абвгдеёжзиклмнопрстуфхцчшщьыъэюя"
+    alphabet = digits + ascii_letters + cyrilic + cyrilic.upper() + " _-&%@#!()"
+    file_name = "".join([c for c in file_name if c in alphabet])
+    return file_name
+
+
 def ffmpeg__to_mp3(
     from_file: str,
     bitrate: int,
@@ -45,7 +58,7 @@ def ffmpeg__to_mp3(
 
     to_file = add_suffix(from_file, ".mp3")
 
-    ffmpeg_path = os.environ["BOT_FFMPEG_PATH"]
+    ffmpeg_path = os.environ["NARRATOR_FFMPEG_PATH"]
     ffmpeg_args = [ffmpeg_path]
     ffmpeg_args.extend(["-i", from_file])
     ffmpeg_args.extend(["-b:a", f"{bitrate}k"])
@@ -58,7 +71,7 @@ def ffmpeg__to_mp3(
 def balcon(from_txt_file: str):
     to_file = add_suffix(from_txt_file, ".wav")
 
-    balcon_path = os.environ["BOT_BALCON_PATH"]
+    balcon_path = os.environ["NARRATOR_BALCON_PATH"]
     balcon_args = [balcon_path]
     balcon_args.extend(["-f", from_txt_file])
     balcon_args.extend(["-n", "Irina"])

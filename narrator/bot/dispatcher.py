@@ -6,6 +6,7 @@ import os
 from aiogram import Dispatcher
 from aiogram.types import ContentType, Message, FSInputFile
 from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.filters import Command
 
 from ..reader import url as r_url
 from ..reader import file as r_file
@@ -18,7 +19,7 @@ mem_storage = MemoryStorage()
 dispatcher = Dispatcher(storage=mem_storage)
 
 
-@dispatcher.message(commands=["about"])
+@dispatcher.message(Command(commands=["about"]))
 async def cmd_test(message: Message):
     await message.answer("🤖: ...")
 

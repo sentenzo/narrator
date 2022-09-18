@@ -6,7 +6,7 @@ from aiogram.types import TelegramObject
 
 
 class Authorizer(BaseMiddleware):
-    WHITELIST: list[str] = os.environ["BOT_USERNAMES_WHITELIST"].split(",")
+    WHITELIST: list[str] = os.environ["NARRATOR_BOT_USERNAMES_WHITELIST"].split(",")
 
     async def __call__(
         self,
