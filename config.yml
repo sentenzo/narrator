@@ -1,0 +1,11 @@
+# A configuration file for the Narrator module
+
+bot:
+  token:  # 0123456789:will_be_taken_from_.env
+  allowed_usernames: ["durov"] # will be enriched from .env
+
+utils:
+  balcon:
+    path: c:\bin\balcon.exe
+  ffmpeg:
+    path: c:\bin\ffmpeg.exe

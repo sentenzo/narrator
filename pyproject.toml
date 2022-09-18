@@ -12,6 +12,8 @@ python = "^3.10"
 aiogram = {version = "^3.0.0b4", allow-prereleases = true}
 pyttsx3 = "^2.90"
 python-dotenv = "^0.21.0"
+PyYAML = "^6.0"
+python-box = "^6.0.2"
 
 
 [tool.poetry.group.dev.dependencies]

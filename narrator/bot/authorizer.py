@@ -4,9 +4,10 @@ from typing import Callable, Dict, Any, Awaitable
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
+import narrator.config as conf
 
 class Authorizer(BaseMiddleware):
-    WHITELIST: list[str] = os.environ["NARRATOR_BOT_USERNAMES_WHITELIST"].split(",")
+    WHITELIST: list[str] = conf.bot.allowed_usernames
 
     async def __call__(
         self,

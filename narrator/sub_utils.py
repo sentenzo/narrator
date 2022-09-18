@@ -1,5 +1,6 @@
-import os
 import subprocess
+
+import narrator.config as conf
 
 RSTR_LEN = 8
 RSTR_POPULATION = "0123456789ABCDEF"
@@ -58,7 +59,7 @@ def ffmpeg__to_mp3(
 
     to_file = add_suffix(from_file, ".mp3")
 
-    ffmpeg_path = os.environ["NARRATOR_FFMPEG_PATH"]
+    ffmpeg_path = conf.utils.ffmpeg.path
     ffmpeg_args = [ffmpeg_path]
     ffmpeg_args.extend(["-i", from_file])
     ffmpeg_args.extend(["-b:a", f"{bitrate}k"])
@@ -71,7 +72,7 @@ def ffmpeg__to_mp3(
 def balcon(from_txt_file: str):
     to_file = add_suffix(from_txt_file, ".wav")
 
-    balcon_path = os.environ["NARRATOR_BALCON_PATH"]
+    balcon_path = conf.utils.balcon.path
     balcon_args = [balcon_path]
     balcon_args.extend(["-f", from_txt_file])
     balcon_args.extend(["-n", "Irina"])
