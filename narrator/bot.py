@@ -2,19 +2,22 @@
 import logging
 import tempfile
 import os
+from typing import Callable, Dict, Any, Awaitable
 
-from aiogram import Dispatcher
-from aiogram.types import ContentType, Message, FSInputFile
+from aiogram import Dispatcher, BaseMiddleware, Bot
+from aiogram.types import ContentType, Message, FSInputFile, TelegramObject
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.filters import Command
 
-from ..reader import url as r_url
-from ..reader import file as r_file
-from .bot import narrator_bot as bot
-from ..speaker import Speaker
+from .reader import url as r_url
+from .reader import file as r_file
+from .speaker import Speaker
+import narrator.config as conf
 
 logger = logging.getLogger(__name__)
 
+
+narrator_bot = Bot(token=conf.bot.token)
 mem_storage = MemoryStorage()
 dispatcher = Dispatcher(storage=mem_storage)
 
@@ -36,7 +39,7 @@ async def take_document(message: Message):
         return
     with tempfile.TemporaryDirectory() as temp_dir_path:
         file_path = os.path.join(temp_dir_path, message.document.file_name)
-        await bot.download(message.document, file_path)
+        await narrator_bot.download(message.document, file_path)
         path_to_audio = Speaker.narrate_from_txt_to_file(file_path)
         tf = FSInputFile(path_to_audio)
         await message.answer_document(tf)
@@ -63,6 +66,27 @@ async def take_else(message: Message):
     await message.answer("🤖: Please, send me a file or a link")
 
 
-from .authorizer import Authorizer
+############################################################
+
+
+class Authorizer(BaseMiddleware):
+    WHITELIST: list[str] = conf.bot.allowed_usernames
+
+    async def __call__(
+        self,
+        handler: Callable[[TelegramObject, Dict[str, Any]], Awaitable[Any]],
+        event: TelegramObject,
+        data: Dict[str, Any],
+    ) -> Any:
+        if event.from_user.username in Authorizer.WHITELIST:
+            return await handler(event, data)
+
 
 dispatcher.message.middleware(Authorizer())
+
+
+############################################################
+
+narrator_bot = Bot(token=conf.bot.token)
+
+__all__ = [dispatcher, narrator_bot]
