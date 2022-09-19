@@ -31,6 +31,9 @@ def test_suffix(file_path):
     assert add_suffix(file_path) != add_suffix(file_path)
     assert crop_suffix(add_suffix(file_path)) == crop_suffix(add_suffix(file_path))
 
+    suf3 = add_suffix(add_suffix(add_suffix(file_path)))
+    assert crop_suffix(suf3) == file_path
+
 
 def test_make_filename():
     for in_str in ["abc_def", "", "ы", "_-_aAфФ", "8053", " _-&%@#!()"]:

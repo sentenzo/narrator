@@ -20,20 +20,18 @@ def crop_suffix(file_path):
     if len(f) > (RSTR_LEN + 1) and f[-(RSTR_LEN + 1)] == "_":
         rstr = f[-RSTR_LEN:]
         if all(c in RSTR_POPULATION for c in rstr):
-            f = f[:-RSTR_LEN]
+            f = f[:~RSTR_LEN]
     return join(d, f + e)
 
 
 def add_suffix(file_path, ext=None):
+    file_path = crop_suffix(file_path)
+
     from os.path import dirname, basename, join, splitext
 
     new_filename = [dirname(file_path)]
     old_filename, old_ext = splitext(basename(file_path))
     ext = ext or old_ext or ""
-    if len(old_filename) > (RSTR_LEN + 1) and old_filename[-(RSTR_LEN + 1)] == "_":
-        rstr = old_filename[-RSTR_LEN:]
-        if all(c in RSTR_POPULATION for c in rstr):
-            old_filename = old_filename[:-RSTR_LEN]
     new_filename.append(f"{old_filename}_{rand_str()}{ext}")
     return join(*new_filename)
 
