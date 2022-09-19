@@ -9,3 +9,6 @@ utils:
     path: c:\bin\balcon.exe
   ffmpeg:
     path: c:\bin\ffmpeg.exe
+
+to_txt:
+  max_input_size: 5242880 # 5 * 2 ^ 20 == 5 MiB 

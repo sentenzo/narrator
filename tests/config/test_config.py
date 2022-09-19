@@ -7,7 +7,7 @@ import yaml
 from narrator.config import _Config
 
 
-CONF_YML_PATH = os.path.join("tests", "test_config", "config.yml")
+CONF_YML_PATH = os.path.join("tests", "config", "config.yml")
 CONF_YML = yaml.safe_load(open(CONF_YML_PATH))
 
 EMPTY_ENV = {
