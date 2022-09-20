@@ -54,13 +54,11 @@ class UrlWorker(BaseWorker):
 class DocWorker(BaseWorker):
     @staticmethod
     def _bytes_to_mib_str(bytes: int, ndigits: int = 2):
-        mul = 10**ndigits
-        val = bytes * mul // 2**20
-        d, m = divmod(val, mul)
-        m = str(m)
-        if (n := ndigits - len(m)) > 0:
-            m += "0" * n
-        return f"{d}.{m}"
+        if ndigits < 0:
+            raise ValueError
+        r = round(bytes / 2**20, ndigits)
+        fstr = "{" + f"0:0.{ndigits}f" + "}"
+        return fstr.format(r)
 
     def __init__(self, bot: Bot, message: Message) -> None:
         super().__init__(bot, message)
