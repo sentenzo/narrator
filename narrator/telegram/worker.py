@@ -32,14 +32,15 @@ class UrlWorker(BaseWorker):
         self._url = url_parser.Url(self._message.text)
 
     def check_validity(self) -> ValidityCheckResult:
-        if not self._url.is_valid():
+        url: url_parser.Url = self._url
+        if not url.is_valid:
             description = "Not a valid url"
             return ValidityCheckResult(False, description, description)
-        elif not self._url.is_reachable():
+        elif not url.is_reachable:
             description = "The URL is unreachable (can't open the web page)"
             return ValidityCheckResult(False, description, description)
         try:
-            self._url.parse()
+            url.parse()
         except UrlParserException as ex:
             description = str(ex)
             user_description = "Faild to parse the web page"
