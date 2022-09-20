@@ -1,3 +1,4 @@
+import os
 from typing import NamedTuple
 
 from aiogram import Bot
@@ -6,6 +7,15 @@ from aiogram.types import Message, Document
 from narrator.exceptions import UrlParserException
 import narrator.url_parser as url_parser
 import narrator.to_txt as to_txt
+from narrator.text import Text
+from narrator.sub_utils import (
+    balcon,
+    blb2txt,
+    ffmpeg__to_mp3,
+    add_suffix,
+    crop_suffix,
+    make_filename,
+)
 
 
 class ValidityCheckResult(NamedTuple):
@@ -51,6 +61,13 @@ class UrlWorker(BaseWorker):
             return ValidityCheckResult(False, description, user_description)
         return ValidityCheckResult(True)
 
+    async def produce_audio_file(self, directory: str) -> str:
+        text: Text = self._url.parse()
+        txt_path = text.save_to_txt(directory)
+        wav_path = balcon(txt_path)
+        mp3_path = ffmpeg__to_mp3(wav_path)
+        return mp3_path
+
 
 class DocWorker(BaseWorker):
     @staticmethod
@@ -79,3 +96,12 @@ class DocWorker(BaseWorker):
             description = f"The file is too big: the file size is {s_cur_mib} MiB, and the max size allowed is {s_max_mib} MiB)"
             return ValidityCheckResult(False, description, description)
         return ValidityCheckResult(True)
+
+    async def produce_audio_file(self, directory: str) -> str:
+        filename = make_filename(self._doc.file_name)
+        file_path = os.path.join(directory, filename)
+        self._bot.download(self._doc, filename)
+        txt_path = blb2txt(file_path)
+        wav_path = balcon(txt_path)
+        mp3_path = ffmpeg__to_mp3(wav_path)
+        return mp3_path

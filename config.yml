@@ -9,6 +9,19 @@ utils:
     path: c:\bin\balcon.exe
   ffmpeg:
     path: c:\bin\ffmpeg.exe
+  blb2txt:
+    path: c:\bin\blb2txt.exe
 
 to_txt:
   max_input_size: 5242880 # 5 * 2 ^ 20 == 5 MiB 
+
+url_parser:
+  sites:
+    habr:
+      url_re: https\://habr\.com/..(/company/[-\w]+/blog|/post)/\d+
+      lang: ru
+      re:
+        title: main h1[data-test-id="articleTitle"] span
+        author: main a.tm-user-info__username
+        publication_date: main div.tm-article-snippet__meta time
+        text: "#post-content-body"

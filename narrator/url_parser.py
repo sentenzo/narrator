@@ -1,6 +1,9 @@
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
+from narrator.exceptions import UrlInvalid, UrlUnreachable
+from narrator.text import Text
+
 # https://stackoverflow.com/a/38020041/2493536
 def is_uri_valid(maybe_url: str) -> bool:
     try:
@@ -28,7 +31,7 @@ class Url:
 
         self._is_valid: bool | None = None
         self._is_reachable: bool | None = None
-        self._parsed_text: list[str] | None = None
+        self._parsed_text: Text | None = None
 
     @property
     def is_valid(self) -> bool:
@@ -42,9 +45,15 @@ class Url:
             self._is_reachable = is_url_reachable(self._url)
         return self._is_reachable
 
-    def parse(self) -> list[str]:
-        raise NotImplemented()
+    def parse(self) -> Text:
+        if not self.is_valid:
+            raise UrlInvalid()
+        if not self.is_reachable:
+            raise UrlUnreachable()
+
         if not self._parsed_text:
             ...
             # self._parsed_text = something
+            # raise NotImplemented()
+            self._parsed_text = Text(Text.Language.ru, [""])
         return self._parsed_text

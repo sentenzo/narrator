@@ -82,3 +82,18 @@ def balcon(from_txt_file: str):
     subprocess.run(balcon_args)
 
     return to_file
+
+
+def blb2txt(from_file: str):
+    # .\blb2txt -f tst.docx -out txt.txt -e utf8
+    to_file = add_suffix(from_file, ".txt")
+
+    blb2txt_path = conf.utils.blb2txt.path
+    blb2txt_args = [blb2txt_path]
+    blb2txt_args.extend(["-f", from_file])
+    blb2txt_args.extend(["-out", to_file])
+    blb2txt_args.extend(["-e", "utf8"])
+
+    subprocess.run(blb2txt_args)
+
+    return to_file
