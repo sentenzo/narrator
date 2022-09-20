@@ -1,8 +1,14 @@
 from urllib.parse import urlparse
 from urllib.request import urlopen
+import re
 
-from narrator.exceptions import UrlInvalid, UrlUnreachable
+from bs4 import BeautifulSoup
+
+from narrator.exceptions import UrlInvalid, UrlUnreachable, UrlParserException
 from narrator.text import Text
+import narrator.config
+
+conf = narrator.config.url_parser
 
 # https://stackoverflow.com/a/38020041/2493536
 def is_uri_valid(maybe_url: str) -> bool:
@@ -45,6 +51,17 @@ class Url:
             self._is_reachable = is_url_reachable(self._url)
         return self._is_reachable
 
+    def _get_html(self) -> str:
+        with urlopen(self._url) as resp:
+            html = resp.read().decode()
+            return html
+
+    def _pick_parse_config(self):
+        for site in conf.sites:
+            if re.match(conf.sites[site].url_re, self._url):
+                return conf.sites[site]
+        return None
+
     def parse(self) -> Text:
         if not self.is_valid:
             raise UrlInvalid()
@@ -52,8 +69,19 @@ class Url:
             raise UrlUnreachable()
 
         if not self._parsed_text:
-            ...
-            # self._parsed_text = something
-            # raise NotImplemented()
-            self._parsed_text = Text(Text.Language.ru, [""])
+            html = self._get_html()
+            soup = BeautifulSoup(html, "html.parser")
+            parse_config = self._pick_parse_config()
+            if not parse_config:
+                raise UrlParserException()
+            title = soup.select_one(parse_config.re.title)
+            author = soup.select_one(parse_config.re.author)
+            publication_date = soup.select_one(parse_config.re.publication_date)
+
+            paragraphs = []
+            paragraphs.append(f"author: {author}")
+            paragraphs.append(f"publication_date: {publication_date}")
+            paragraphs.append(soup.select_one(parse_config.re.text).text)
+
+            self._parsed_text = Text(title, paragraphs)
         return self._parsed_text
