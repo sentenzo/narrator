@@ -44,14 +44,14 @@ def make_filename(file_name: str):
     from string import digits, ascii_letters
 
     cyrilic = "абвгдеёжзиклмнопрстуфхцчшщьыъэюя"
-    alphabet = digits + ascii_letters + cyrilic + cyrilic.upper() + " _-&%@#!()"
+    alphabet = digits + ascii_letters + cyrilic + cyrilic.upper() + " _-&%@#!()."
     file_name = "".join([c for c in file_name if c in alphabet])
     return file_name
 
 
 def ffmpeg__to_mp3(
     from_file: str,
-    bitrate: int,
+    bitrate: int = 96,
 ):
     # ffmpeg -i input.wav -vn -ar 44100 -ac 2 -b:a 192k output.mp3
 
@@ -80,5 +80,20 @@ def balcon(from_txt_file: str):
     balcon_args.extend(["-w", to_file])
 
     subprocess.run(balcon_args)
+
+    return to_file
+
+
+def blb2txt(from_file: str):
+    # .\blb2txt -f tst.docx -out txt.txt -e utf8
+    to_file = add_suffix(from_file, ".txt")
+
+    blb2txt_path = conf.utils.blb2txt.path
+    blb2txt_args = [blb2txt_path]
+    blb2txt_args.extend(["-f", from_file])
+    blb2txt_args.extend(["-out", to_file])
+    blb2txt_args.extend(["-e", "utf8"])
+
+    subprocess.run(blb2txt_args)
 
     return to_file

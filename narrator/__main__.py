@@ -1,6 +1,6 @@
 import asyncio
 
-from narrator.bot import dispatcher, narrator_bot
+from narrator.telegram.bot import dispatcher, narrator_bot
 
 
 async def main():
