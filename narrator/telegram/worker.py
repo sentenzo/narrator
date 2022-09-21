@@ -63,7 +63,8 @@ class UrlWorker(BaseWorker):
 
     async def produce_audio_file(self, directory: str) -> str:
         text: Text = self._url.parse()
-        txt_path = text.save_to_txt(directory)
+        # balcon reads only utf-8-sig
+        txt_path = text.save_to_txt(directory, encoding="utf-8-sig")
         wav_path = balcon(txt_path)
         mp3_path = ffmpeg__to_mp3(wav_path)
         return mp3_path
@@ -100,7 +101,7 @@ class DocWorker(BaseWorker):
     async def produce_audio_file(self, directory: str) -> str:
         filename = make_filename(self._doc.file_name)
         file_path = os.path.join(directory, filename)
-        self._bot.download(self._doc, filename)
+        await self._bot.download(self._doc, file_path)
         txt_path = blb2txt(file_path)
         wav_path = balcon(txt_path)
         mp3_path = ffmpeg__to_mp3(wav_path)

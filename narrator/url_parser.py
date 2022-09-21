@@ -28,10 +28,6 @@ def is_url_reachable(url: str, timeout=3) -> bool:
 
 
 class Url:
-    """
-    dummy
-    """
-
     def __init__(self, url: str) -> None:
         self._url = url
 
@@ -74,8 +70,8 @@ class Url:
             parse_config = self._pick_parse_config()
             if not parse_config:
                 raise UrlParserException()
-            title = soup.select_one(parse_config.re.title)
-            author = soup.select_one(parse_config.re.author)
+            title = soup.select_one(parse_config.re.title).text
+            author = soup.select_one(parse_config.re.author).text
             publication_date = soup.select_one(parse_config.re.publication_date)
 
             paragraphs = []

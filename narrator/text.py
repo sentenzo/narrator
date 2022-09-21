@@ -77,7 +77,7 @@ class Text:
 
     @staticmethod
     def from_txt(file_path: str, encoding: str = "utf-8") -> Text:
-        text = open(file_path, encoding="utf-8").read()
+        text = open(file_path, encoding=encoding).read()
         filename = os.path.basename(file_path)
         title, _ = os.path.splitext(filename)
         return Text(title, text)
