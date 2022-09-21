@@ -63,7 +63,7 @@ class UrlWorker(BaseWorker):
 
     async def produce_audio_file(self, directory: str) -> str:
         text: Text = self._url.parse()
-        # balcon reads only utf-8-sig
+        # balcon.exe only works with UTF-8-BOM (or "utf-8-sig")
         txt_path = text.save_to_txt(directory, encoding="utf-8-sig")
         wav_path = balcon(txt_path)
         mp3_path = ffmpeg__to_mp3(wav_path)
