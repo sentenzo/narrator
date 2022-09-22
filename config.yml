@@ -7,6 +7,17 @@ bot:
 utils:
   balcon:
     path: c:\bin\balcon.exe
+    defaults:
+      ru:
+        voice: Microsoft Irina Desktop
+        speed: 8
+        volume: 100
+        pitch: 0
+      en:
+        voice: Microsoft Zira Desktop
+        speed: 4
+        volume: 100
+        pitch: 0
   ffmpeg:
     path: c:\bin\ffmpeg.exe
   blb2txt:

@@ -109,6 +109,6 @@ class Text:
     def save_to_mp3(self, directory: str, filename: str | None = None) -> str:
         # balcon.exe only works with UTF-8-BOM (or "utf-8-sig")
         txt_path = self.save_to_txt(directory, filename, "utf-8-sig")
-        wav_path = balcon(txt_path)
+        wav_path = balcon(txt_path, self._lang.value)
         mp3_path = ffmpeg__to_mp3(wav_path)
         return mp3_path
