@@ -5,17 +5,9 @@ from aiogram import Bot
 from aiogram.types import Message, Document
 
 from narrator.exceptions import UrlParserException
-import narrator.url_parser as url_parser
-import narrator.to_txt as to_txt
+import narrator.web_parser as web_parser
 from narrator.text import Text
-from narrator.sub_utils import (
-    balcon,
-    blb2txt,
-    ffmpeg__to_mp3,
-    add_suffix,
-    crop_suffix,
-    make_filename,
-)
+from narrator.sub_utils import make_filename
 
 
 class ValidityCheckResult(NamedTuple):
@@ -39,10 +31,10 @@ class BaseWorker:
 class UrlWorker(BaseWorker):
     def __init__(self, bot: Bot, message: Message) -> None:
         super().__init__(bot, message)
-        self._url = url_parser.Url(self._message.text)
+        self._url = web_parser.Url(self._message.text)
 
     def check_validity(self) -> ValidityCheckResult:
-        url: url_parser.Url = self._url
+        url: web_parser.Url = self._url
         if not url.is_valid:
             description = "Not a valid url"
             return ValidityCheckResult(False, description, description)
@@ -63,10 +55,7 @@ class UrlWorker(BaseWorker):
 
     async def produce_audio_file(self, directory: str) -> str:
         text: Text = self._url.parse()
-        # balcon.exe only works with UTF-8-BOM (or "utf-8-sig")
-        txt_path = text.save_to_txt(directory, encoding="utf-8-sig")
-        wav_path = balcon(txt_path)
-        mp3_path = ffmpeg__to_mp3(wav_path)
+        mp3_path = text.save_to_mp3(directory)
         return mp3_path
 
 
@@ -85,15 +74,15 @@ class DocWorker(BaseWorker):
 
     def check_validity(self) -> ValidityCheckResult:
         doc = self._doc
-        if not to_txt.has_proper_extention(doc.file_name):
+        if not Text.has_proper_extention(doc.file_name):
             description = "The file extention is not supported"
             user_description = "The file extention is not supported\n"
             user_description += "List of supported extentions:\n"
-            user_description += "  " + ", ".join(to_txt.INPUT_FORMATS)
+            user_description += "  " + ", ".join(Text.INPUT_FORMATS)
             return ValidityCheckResult(False, description, user_description)
-        elif doc.file_size > to_txt.MAX_INPUT_SIZE:
+        elif doc.file_size > Text.MAX_INPUT_SIZE:
             s_cur_mib = DocWorker._bytes_to_mib_str(doc.file_size)
-            s_max_mib = DocWorker._bytes_to_mib_str(to_txt.MAX_INPUT_SIZE)
+            s_max_mib = DocWorker._bytes_to_mib_str(Text.MAX_INPUT_SIZE)
             description = f"The file is too big: the file size is {s_cur_mib} MiB, and the max size allowed is {s_max_mib} MiB)"
             return ValidityCheckResult(False, description, description)
         return ValidityCheckResult(True)
@@ -102,7 +91,6 @@ class DocWorker(BaseWorker):
         filename = make_filename(self._doc.file_name)
         file_path = os.path.join(directory, filename)
         await self._bot.download(self._doc, file_path)
-        txt_path = blb2txt(file_path)
-        wav_path = balcon(txt_path)
-        mp3_path = ffmpeg__to_mp3(wav_path)
+        text = Text.from_file(file_path)
+        mp3_path = text.save_to_mp3(directory)
         return mp3_path

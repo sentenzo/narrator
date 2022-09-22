@@ -4,13 +4,21 @@ from enum import Enum
 import string
 import datetime
 
+from narrator.sub_utils import blb2txt, balcon, ffmpeg__to_mp3
+from narrator.exceptions import TextException
+import narrator.config
+
+conf = narrator.config.text
+
 
 class Text:
     class Language(Enum):
-        # def __init__(self, char_set, name) -> None:
-
         RU: str = "ru"
         EN: str = "en"
+
+    INPUT_FORMATS = conf.input_formats
+
+    MAX_INPUT_SIZE = conf.max_input_size
 
     @staticmethod
     def guess_language(text: str | list[str]) -> Language:
@@ -81,3 +89,26 @@ class Text:
         filename = os.path.basename(file_path)
         title, _ = os.path.splitext(filename)
         return Text(title, text)
+
+    def has_proper_extention(filename):
+        ext = os.path.splitext(filename)[1]
+        return ext.lower() in Text.INPUT_FORMATS
+
+    @staticmethod
+    def from_file(file_path: str) -> Text:
+        if not Text.has_proper_extention(file_path):
+            raise TextException()
+        ext = os.path.splitext(file_path)[1]
+        if not ext == ".txt":
+            try:
+                file_path = blb2txt(file_path)
+            except TextException:
+                raise
+        return Text.from_txt(file_path)
+
+    def save_to_mp3(self, directory: str, filename: str | None = None) -> str:
+        # balcon.exe only works with UTF-8-BOM (or "utf-8-sig")
+        txt_path = self.save_to_txt(directory, filename, "utf-8-sig")
+        wav_path = balcon(txt_path)
+        mp3_path = ffmpeg__to_mp3(wav_path)
+        return mp3_path

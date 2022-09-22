@@ -1,6 +1,6 @@
 import pytest
 
-import narrator.url_parser as urlp
+import narrator.web_parser as wp
 
 
 VALID_URLS = [
@@ -32,22 +32,22 @@ UNREACHABLE_URLS = INVALID_URLS + [
 
 def test_is_uri_valid():
     for url in VALID_URLS:
-        assert urlp.is_uri_valid(url)
-        url_obj = urlp.Url(url)
+        assert wp.is_uri_valid(url)
+        url_obj = wp.Url(url)
         assert url_obj.is_valid
     for url in INVALID_URLS:
-        assert not urlp.is_uri_valid(url)
-        url_obj = urlp.Url(url)
+        assert not wp.is_uri_valid(url)
+        url_obj = wp.Url(url)
         assert not url_obj.is_valid
 
 
 @pytest.mark.slow
 def test_is_url_reachable():
     for url in REACHABLE_URLS:
-        assert urlp.is_url_reachable(url)
-        url_obj = urlp.Url(url)
+        assert wp.is_url_reachable(url)
+        url_obj = wp.Url(url)
         assert url_obj.is_reachable
     for url in UNREACHABLE_URLS:
-        assert not urlp.is_url_reachable(url)
-        url_obj = urlp.Url(url)
+        assert not wp.is_url_reachable(url)
+        url_obj = wp.Url(url)
         assert not url_obj.is_reachable

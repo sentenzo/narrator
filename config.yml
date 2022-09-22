@@ -12,13 +12,14 @@ utils:
   blb2txt:
     path: c:\bin\blb2txt.exe
 
-to_txt:
+text:
   max_input_size: 5242880 # 5 * 2 ^ 20 == 5 MiB 
+  input_formats: [".epub", ".fb2", ".fb3", ".md", ".txt", ".doc", ".docx", ".rtf", ".html", ".htm"]
 
-url_parser:
+web_parser:
   sites:
     habr:
-      url_re: https\://habr\.com/..(/company/[-\w]+/blog|/post)/\d+
+      url_re: https\://habr\.com/..(/company/[-\w]+/blog|/post|/news/t)/\d+
       lang: ru
       re:
         title: main h1[data-test-id="articleTitle"] span

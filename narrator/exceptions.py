@@ -16,5 +16,5 @@ class UrlUnreachable(UrlParserException):
     pass
 
 
-class TxtTransformerException(NarratorException):
+class TextException(NarratorException):
     pass
