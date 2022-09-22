@@ -4,6 +4,9 @@ class NarratorException(Exception):
     """
 
 
+###
+
+
 class UrlParserException(NarratorException):
     pass
 
@@ -16,5 +19,12 @@ class UrlUnreachable(UrlParserException):
     pass
 
 
-class TxtTransformerException(NarratorException):
+class ParsingRulesNotFound(UrlParserException):
+    pass
+
+
+###
+
+
+class TextException(NarratorException):
     pass

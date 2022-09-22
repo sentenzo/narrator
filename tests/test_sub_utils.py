@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from narrator.sub_utils import make_filename, rand_str, crop_suffix, add_suffix
+from narrator.utils import make_filename, rand_str, crop_suffix, add_suffix
 
 
 def test_rand_str():

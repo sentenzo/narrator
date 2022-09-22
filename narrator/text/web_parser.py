@@ -4,11 +4,11 @@ import re
 
 from bs4 import BeautifulSoup
 
-from narrator.exceptions import UrlInvalid, UrlUnreachable, UrlParserException
-from narrator.text import Text
+from narrator.exceptions import UrlInvalid, UrlUnreachable, ParsingRulesNotFound
+from narrator.text.text import Text
 import narrator.config
 
-conf = narrator.config.url_parser
+conf = narrator.config.web_parser
 
 # https://stackoverflow.com/a/38020041/2493536
 def is_uri_valid(maybe_url: str) -> bool:
@@ -69,10 +69,14 @@ class Url:
             soup = BeautifulSoup(html, "html.parser")
             parse_config = self._pick_parse_config()
             if not parse_config:
-                raise UrlParserException()
-            title = soup.select_one(parse_config.re.title).text
-            author = soup.select_one(parse_config.re.author).text
-            publication_date = soup.select_one(parse_config.re.publication_date)
+                raise ParsingRulesNotFound(
+                    f"The rules to parse {self._url} are not specified in the config file"
+                )
+            title = soup.select_one(parse_config.re.title).text.strip()
+            author = soup.select_one(parse_config.re.author).text.strip()
+            publication_date: str = soup.select_one(
+                parse_config.re.publication_date
+            ).text.strip()
 
             paragraphs = []
             paragraphs.append(f"author: {author}")
