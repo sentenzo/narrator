@@ -4,8 +4,8 @@ import re
 
 from bs4 import BeautifulSoup
 
-from narrator.exceptions import UrlInvalid, UrlUnreachable, UrlParserException
-from narrator.text import Text
+from narrator.exceptions import UrlInvalid, UrlUnreachable, ParsingRulesNotFound
+from narrator.text.text import Text
 import narrator.config
 
 conf = narrator.config.web_parser
@@ -69,7 +69,9 @@ class Url:
             soup = BeautifulSoup(html, "html.parser")
             parse_config = self._pick_parse_config()
             if not parse_config:
-                raise UrlParserException()
+                raise ParsingRulesNotFound(
+                    f"The rules to parse {self._url} are not specified in the config file"
+                )
             title = soup.select_one(parse_config.re.title).text.strip()
             author = soup.select_one(parse_config.re.author).text.strip()
             publication_date: str = soup.select_one(

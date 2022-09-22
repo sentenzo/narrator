@@ -4,7 +4,7 @@ bot:
   token:  # 0123456789:will_be_taken_from_.env
   allowed_usernames: ["durov"] # will be enriched from .env
 
-utils:
+thirdparty:
   balcon:
     path: c:\bin\balcon.exe
     defaults:

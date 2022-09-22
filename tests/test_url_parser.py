@@ -1,6 +1,6 @@
 import pytest
 
-import narrator.web_parser as wp
+import narrator.text.web_parser as wp
 
 
 VALID_URLS = [

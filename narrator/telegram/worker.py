@@ -5,9 +5,9 @@ from aiogram import Bot
 from aiogram.types import Message, Document
 
 from narrator.exceptions import UrlParserException
-import narrator.web_parser as web_parser
-from narrator.text import Text
-from narrator.sub_utils import make_filename
+import narrator.text.web_parser as web_parser
+from narrator.text.text import Text
+from narrator.utils import make_filename
 
 
 class ValidityCheckResult(NamedTuple):
