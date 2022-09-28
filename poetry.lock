@@ -85,7 +85,7 @@ tests_no_zope = ["cloudpickle", "coverage[toml] (>=5.0.2)", "hypothesis", "mypy 
 name = "beautifulsoup4"
 version = "4.11.1"
 description = "Screen-scraping library"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6.0"
 
@@ -2247,7 +2247,7 @@ python-versions = ">=3.6"
 name = "soupsieve"
 version = "2.3.2.post1"
 description = "A modern CSS selector implementation for Beautiful Soup."
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.6"
 
@@ -2282,7 +2282,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "3ba7d8aa25725793df60282bc0c5d6ceab2806c20892900e0dccb8c0853cc546"
+content-hash = "e3d05cf6ed79086474dbe6c6a7a3e494f5e94f59c088414c321d919ff3ebd2a2"
 
 [metadata.files]
 aiofiles = [
